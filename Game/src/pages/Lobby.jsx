@@ -228,7 +228,7 @@ function Lobby() {
             h="65px"
             size="lg"
             bgGradient="linear(to-r, purple.500, cyan.400)"
-            color="white"
+            color="black.300"
             fontWeight="bold"
             onClick={() => navigate("/words")}
           >
