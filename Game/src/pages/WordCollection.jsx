@@ -203,7 +203,7 @@ function WordCollection() {
             bgGradient="linear(to-r, purple.500, cyan.400)"
             color="black.300"
             fontWeight="bold"
-            onClick={() => navigate("/wheel")}
+            onClick={() => navigate("/game")}
           >
             Lock Bucket & Continue
           </Button>
