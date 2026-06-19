@@ -27,16 +27,17 @@ function PlayerList({
       </Heading>
 
       <Stack>
-        {players.map((player) => (
+        {players
+        .map((player) => (
           <Flex
-            key={player.id}
+            key={player.uid}
             justify="space-between"
             align="center"
             p={3}
             borderRadius="15px"
             bg={
               pickedPlayerId ===
-              player.id
+              player.uid
                 ? "green.500"
                 : "whiteAlpha.50"
             }
@@ -54,7 +55,7 @@ function PlayerList({
             </Text>
 
             {pickedPlayerId ===
-              player.id && (
+              player.uid && (
               <Badge
                 colorScheme="green"
               >

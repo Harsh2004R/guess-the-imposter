@@ -1,21 +1,7 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 
-function PlayerPicker({
-  isHost,
-  players,
-  pickedPlayerId,
-  onPick,
-}) {
-  const current =
-    players.find(
-      (p) =>
-        p.id === pickedPlayerId
-    );
+function PlayerPicker({ isHost, players, pickedPlayerId, onPick }) {
+  const pickedPlayer = players.find((player) => player.uid === pickedPlayerId);
 
   return (
     <Box
@@ -24,36 +10,20 @@ function PlayerPicker({
       borderRadius="30px"
       p={6}
     >
-      <Heading
-        size="md"
-        color="white"
-        mb={5}
-      >
-        Player Picker
-      </Heading>
-
-      {current ? (
-        <Text
-          color="green.300"
-          fontSize="xl"
-          mb={5}
-        >
-          🎯 {current.name}
-        </Text>
-      ) : (
-        <Text
-          color="gray.400"
-          mb={5}
-        >
-          No Player Selected
-        </Text>
+      {pickedPlayer && (
+        <Box mt={5}>
+          <Text mt={2} color="cyan.300" fontSize="2xl" fontWeight="bold">
+            {pickedPlayer.name}
+            {`'s`}{" "}
+            <Text as={"span"} color="white">
+              Turn
+            </Text>
+          </Text>
+        </Box>
       )}
 
       {isHost && (
-        <Button
-          colorScheme="purple"
-          onClick={onPick}
-        >
+        <Button mt="10px" colorScheme="purple" onClick={onPick}>
           Pick Random Player
         </Button>
       )}

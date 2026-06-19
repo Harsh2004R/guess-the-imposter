@@ -17,23 +17,23 @@ import { listenToRoom } from "../firebase/roomService";
 function Lobby() {
   const navigate = useNavigate();
 
-  const roomCode =
-    sessionStorage.getItem("roomCode");
+  const roomCode = sessionStorage.getItem("roomCode");
 
-  const [room, setRoom] =
-    useState(null);
+  const [room, setRoom] = useState(null);
 
   useEffect(() => {
     if (!roomCode) return;
 
-    const unsubscribe =
-      listenToRoom(
-        roomCode,
-        (roomData) => {
-          setRoom(roomData);
-        }
-      );
+    // const unsubscribe = listenToRoom(roomCode, (roomData) => {
+    //   setRoom(roomData);
+    // });
+    const unsubscribe = listenToRoom(roomCode, (data) => {
+      setRoom(data);
 
+      if (data?.status === "game") {
+        navigate("/game");
+      }
+    });
     return () => {
       if (unsubscribe) unsubscribe();
     };
@@ -62,29 +62,18 @@ function Lobby() {
     });
   });
 
-  const players = room?.players
-    ? Object.values(room.players)
-    : [];
+  const players = room?.players ? Object.values(room.players) : [];
 
   const copyCode = async () => {
-    await navigator.clipboard.writeText(
-      roomCode
-    );
+    await navigator.clipboard.writeText(roomCode);
 
     alert("Room code copied");
   };
 
   if (!roomCode) {
     return (
-      <Flex
-        minH="100vh"
-        bg="#050816"
-        justify="center"
-        align="center"
-      >
-        <Text color="white">
-          Room not found
-        </Text>
+      <Flex minH="100vh" bg="#050816" justify="center" align="center">
+        <Text color="white">Room not found</Text>
       </Flex>
     );
   }
@@ -139,48 +128,27 @@ function Lobby() {
               gap={4}
             >
               <Box>
-                <Text
-                  color="gray.400"
-                  fontSize="sm"
-                >
+                <Text color="gray.400" fontSize="sm">
                   ROOM CODE
                 </Text>
 
-                <Heading
-                  color="white"
-                  size="2xl"
-                >
+                <Heading color="white" size="2xl">
                   {roomCode}
                 </Heading>
               </Box>
 
-              <Button
-                colorScheme="purple"
-                onClick={copyCode}
-              >
+              <Button colorScheme="purple" onClick={copyCode}>
                 Copy Code
               </Button>
             </Flex>
           </Box>
 
-          <Flex
-            justify="space-between"
-            align="center"
-            flexWrap="wrap"
-            gap={4}
-          >
-            <Heading
-              color="white"
-              size="lg"
-            >
+          <Flex justify="space-between" align="center" flexWrap="wrap" gap={4}>
+            <Heading color="white" size="lg">
               Players
             </Heading>
 
-            <Badge
-              colorScheme="green"
-              p={3}
-              borderRadius="full"
-            >
+            <Badge colorScheme="green" p={3} borderRadius="full">
               {players.length} Online
             </Badge>
           </Flex>
@@ -202,14 +170,8 @@ function Lobby() {
                 borderRadius="25px"
                 p={5}
               >
-                <Flex
-                  justify="space-between"
-                  align="center"
-                >
-                  <Flex
-                    align="center"
-                    gap={3}
-                  >
+                <Flex justify="space-between" align="center">
+                  <Flex align="center" gap={3}>
                     <Flex
                       w="50px"
                       h="50px"
@@ -223,39 +185,23 @@ function Lobby() {
                       {player.name?.[0]}
                     </Flex>
 
-                    <Text
-                      color="white"
-                      fontWeight="bold"
-                    >
+                    <Text color="white" fontWeight="bold">
                       {player.name}
                     </Text>
                   </Flex>
 
-                  {player.host && (
-                    <Badge colorScheme="purple">
-                      HOST
-                    </Badge>
-                  )}
+                  {player.host && <Badge colorScheme="purple">HOST</Badge>}
                 </Flex>
               </Box>
             ))}
           </Grid>
 
-          <Box
-            textAlign="center"
-            mt={4}
-          >
-            <Text
-              color="gray.400"
-              mb={4}
-            >
+          <Box textAlign="center" mt={4}>
+            <Text color="gray.400" mb={4}>
               Waiting for players...
             </Text>
 
-            <Flex
-              justify="center"
-              gap={2}
-            >
+            <Flex justify="center" gap={2}>
               <Box
                 className="waiting-dot"
                 w="12px"
@@ -289,9 +235,7 @@ function Lobby() {
             bgGradient="linear(to-r, purple.500, cyan.400)"
             color="black"
             fontWeight="bold"
-            onClick={() =>
-              navigate("/words")
-            }
+            onClick={() => navigate("/words")}
           >
             Start Game
           </Button>

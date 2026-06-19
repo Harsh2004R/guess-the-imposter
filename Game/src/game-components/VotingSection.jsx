@@ -4,6 +4,7 @@ import {
   Heading,
   RadioGroup,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 
 function VotingSection({
@@ -11,6 +12,7 @@ function VotingSection({
   vote,
   setVote,
   submitVote,
+  showVoteMessage,
   voted,
 }) {
   return (
@@ -35,10 +37,12 @@ function VotingSection({
         }
       >
         <Stack gap={3}>
-          {players.map((player) => (
+          {players
+           .filter((player) => !player.eliminated)
+          .map((player) => (
             <RadioGroup.Item
-              key={player.id}
-              value={player.id}
+              key={player.uid}
+              value={player.uid}
               disabled={player.eliminated}
               bg="whiteAlpha.50"
               border="1px solid rgba(255,255,255,.08)"
@@ -68,6 +72,15 @@ function VotingSection({
           ? "Vote Submitted"
           : "Submit Vote"}
       </Button>
+
+      {showVoteMessage && (
+        <Text
+          mt={3}
+          color="green.300"
+        >
+          ✓ Your vote has been submitted
+        </Text>
+      )}
     </Box>
   );
 }

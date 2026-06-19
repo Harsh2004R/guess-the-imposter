@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Lobby from "./pages/Lobby";
 import WordCollection from "./pages/WordCollection";
 import Game from "./pages/Game";
-
+import Winner from "./pages/Winner";
 function App() {
   return (
     <Routes>
@@ -11,6 +11,7 @@ function App() {
       <Route path="/lobby" element={<Lobby />} />
       <Route path="/words" element={<WordCollection />} />
       <Route path="/game" element={<Game />} />
+      <Route path="/winner" element={<Winner />} />
     </Routes>
   );
 }

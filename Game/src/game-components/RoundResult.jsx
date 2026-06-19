@@ -1,15 +1,10 @@
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 
-function RoundResult({
-  eliminatedPlayer,
-}) {
-  if (!eliminatedPlayer)
-    return null;
+function RoundResult({ room, players, isHost, allVoted, onReveal }) {
+  // const eliminatedPlayer = players.find((player) => player.eliminated);
+  const eliminatedPlayer = players.find(
+    (player) => player.uid === room.eliminatedPlayerId,
+  );
 
   return (
     <Box
@@ -18,24 +13,27 @@ function RoundResult({
       borderRadius="30px"
       p={6}
     >
-      <Heading
-        color="white"
-        size="md"
-      >
+      <Heading color="white" size="md" mb={4}>
         Round Result
       </Heading>
 
-      <Text
-        mt={4}
-        color="red.300"
-        fontSize="xl"
-      >
-        ❌{" "}
-        {
-          eliminatedPlayer.name
-        }{" "}
-        Eliminated
-      </Text>
+      {!allVoted ? (
+        <Text color="gray.400">Waiting for all players to vote...</Text>
+      ) : (
+        <>
+          {isHost && (
+            <Button colorScheme="purple" onClick={onReveal}>
+              Reveal Result
+            </Button>
+          )}
+
+          {eliminatedPlayer && (
+            <Text mt={4} color="red.300" fontSize="xl" fontWeight="bold">
+              ❌ {eliminatedPlayer.name} Eliminated
+            </Text>
+          )}
+        </>
+      )}
     </Box>
   );
 }
