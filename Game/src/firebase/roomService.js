@@ -1,4 +1,4 @@
-import { ref, set, get, onValue } from "firebase/database";
+import { ref, set, get, onValue, push, remove } from "firebase/database";
 
 import { db } from "./firebase";
 
@@ -63,5 +63,30 @@ export const listenToRoom = (roomCode, callback) => {
 
   return onValue(roomRef, (snapshot) => {
     callback(snapshot.val());
+  });
+};
+
+// words pair lofic
+export const addWordPair = async ({ roomCode, word1, word2, createdBy }) => {
+  const pairRef = push(ref(db, `rooms/${roomCode}/wordPairs`));
+
+  await set(pairRef, {
+    id: pairRef.key,
+    word1,
+    word2,
+    createdBy,
+    createdAt: Date.now(),
+  });
+};
+
+export const deleteWordPair = async (roomCode, pairId) => {
+  await remove(ref(db, `rooms/${roomCode}/wordPairs/${pairId}`));
+};
+
+export const listenToWordPairs = (roomCode, callback) => {
+  return onValue(ref(db, `rooms/${roomCode}/wordPairs`), (snapshot) => {
+    const data = snapshot.val() || {};
+
+    callback(Object.values(data));
   });
 };

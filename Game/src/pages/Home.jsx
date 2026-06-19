@@ -103,28 +103,43 @@ function Home() {
       alert("Failed to create room");
     }
   };
-  // const joinRoom = () => {
+
+  // const joinRoomHandler = async () => {
   //   if (!name.trim()) {
-  //     alert("Please enter your name");
+  //     alert("Please enter name");
   //     return;
   //   }
 
   //   if (!roomCode.trim()) {
-  //     alert("Please enter room code");
+  //     alert("Enter room code");
   //     return;
   //   }
 
-  //   navigate("/lobby");
+  //   try {
+  //     await joinRoom({
+  //       roomCode,
+  //       uid: user.uid,
+  //       playerName: name,
+  //     });
+
+  //     sessionStorage.setItem("roomCode", roomCode);
+
+  //     sessionStorage.setItem("playerName", name);
+
+  //     navigate(`/lobby?room=${roomCode}`);
+  //   } catch (err) {
+  //     alert("Room not found");
+  //   }
   // };
 
   const joinRoomHandler = async () => {
     if (!name.trim()) {
-      alert("Please enter name");
+      alert("Please enter your name");
       return;
     }
 
     if (!roomCode.trim()) {
-      alert("Enter room code");
+      alert("Please enter room code");
       return;
     }
 
@@ -140,8 +155,8 @@ function Home() {
       sessionStorage.setItem("playerName", name);
 
       navigate(`/lobby?room=${roomCode}`);
-    } catch (err) {
-      alert("Room not found");
+    } catch (error) {
+      alert(error.message);
     }
   };
   return (
