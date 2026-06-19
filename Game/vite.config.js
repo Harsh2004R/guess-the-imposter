@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: "triage-carefully-suds.ngrok-free.dev", // must change in producion...
+    
   },
 });
