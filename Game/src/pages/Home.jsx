@@ -10,11 +10,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useGSAP } from "@gsap/react";
+import {
+  createRoom,
+  generateRoomCode,
+  joinRoom,
+} from "../firebase/roomService";
 import gsap from "gsap";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
+  const { user } = useAuth();
+
+  console.log(user?.uid);
+
   const navigate = useNavigate();
 
   const heroRef = useRef(null);
@@ -58,29 +68,82 @@ function Home() {
     });
   });
 
-  const createRoom = () => {
+  // const createRoom = () => {
+  //   if (!name.trim()) {
+  //     alert("Please enter your name");
+  //     return;
+  //   }
+
+  //   navigate("/lobby");
+  // };
+
+  const createRoomHandler = async () => {
     if (!name.trim()) {
       alert("Please enter your name");
       return;
     }
 
-    navigate("/lobby");
-  };
+    try {
+      const roomCode = generateRoomCode();
 
-  const joinRoom = () => {
+      await createRoom({
+        roomCode,
+        uid: user.uid,
+        playerName: name,
+      });
+
+      sessionStorage.setItem("roomCode", roomCode);
+
+      sessionStorage.setItem("playerName", name);
+
+      navigate(`/lobby?room=${roomCode}`);
+    } catch (error) {
+      console.error(error);
+
+      alert("Failed to create room");
+    }
+  };
+  // const joinRoom = () => {
+  //   if (!name.trim()) {
+  //     alert("Please enter your name");
+  //     return;
+  //   }
+
+  //   if (!roomCode.trim()) {
+  //     alert("Please enter room code");
+  //     return;
+  //   }
+
+  //   navigate("/lobby");
+  // };
+
+  const joinRoomHandler = async () => {
     if (!name.trim()) {
-      alert("Please enter your name");
+      alert("Please enter name");
       return;
     }
 
     if (!roomCode.trim()) {
-      alert("Please enter room code");
+      alert("Enter room code");
       return;
     }
 
-    navigate("/lobby");
-  };
+    try {
+      await joinRoom({
+        roomCode,
+        uid: user.uid,
+        playerName: name,
+      });
 
+      sessionStorage.setItem("roomCode", roomCode);
+
+      sessionStorage.setItem("playerName", name);
+
+      navigate(`/lobby?room=${roomCode}`);
+    } catch (err) {
+      alert("Room not found");
+    }
+  };
   return (
     <Flex
       minH="100vh"
@@ -229,7 +292,8 @@ function Home() {
                 bgGradient="linear(to-r, purple.500, purple.700)"
                 color="black.300"
                 fontWeight="bold"
-                onClick={createRoom}
+                // onClick={createRoom}
+                onClick={createRoomHandler}
               >
                 Create Room
               </Button>
@@ -255,7 +319,8 @@ function Home() {
                 bgGradient="linear(to-r, cyan.400, blue.500)"
                 color="black.300"
                 fontWeight="bold"
-                onClick={joinRoom}
+                // onClick={joinRoom}
+                onClick={joinRoomHandler}
               >
                 Join Room
               </Button>
