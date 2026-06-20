@@ -236,8 +236,8 @@ function Lobby() {
             mt={6}
             h="65px"
             size="lg"
-            bgGradient="linear(to-r, purple.500, cyan.400)"
-            color="black"
+            bg="#3949AB"
+            color="white"
             fontWeight="bold"
             // onClick={() => navigate("/words")}
             onClick={async () => {

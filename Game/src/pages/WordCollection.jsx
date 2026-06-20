@@ -240,7 +240,8 @@ function WordCollection() {
                 onChange={(e) => setWord2(e.target.value)}
               />
 
-              <Button colorScheme="purple" h="55px" onClick={addPairHandler}>
+              <Button colorScheme="purple" bg="#d7d7d7"
+                color="#000" h="55px" onClick={addPairHandler}>
                 Add Pair
               </Button>
             </Stack>
@@ -307,8 +308,8 @@ function WordCollection() {
             <Button
               h="65px"
               size="lg"
-              bgGradient="linear(to-r, purple.500, cyan.400)"
-              color="black"
+              bg="#3949AB"
+              color="white"
               fontWeight="bold"
               onClick={startGameHandler}
             >

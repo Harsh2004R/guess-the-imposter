@@ -256,6 +256,7 @@ function Home() {
               </Heading>
 
               <Input
+                _placeholder={{ color: "whiteAlpha.500" }}
                 size="lg"
                 placeholder="Enter Your Name"
                 bg="whiteAlpha.100"
@@ -268,10 +269,9 @@ function Home() {
               <Button
                 h="60px"
                 size="lg"
-                bgGradient="linear(to-r, purple.500, purple.700)"
-                color="black.300"
+                bg="#3949AB"
+                color="white"
                 fontWeight="bold"
-                // onClick={createRoom}
                 onClick={createRoomHandler}
               >
                 Create Room
@@ -283,6 +283,7 @@ function Home() {
 
               <Input
                 size="lg"
+                _placeholder={{ color: "whiteAlpha.500" }}
                 placeholder="ROOM CODE"
                 bg="whiteAlpha.100"
                 border="1px solid rgba(255,255,255,.08)"
@@ -295,8 +296,8 @@ function Home() {
               <Button
                 h="60px"
                 size="lg"
-                bgGradient="linear(to-r, cyan.400, blue.500)"
-                color="black.300"
+                bg="#3949AB"
+                color="white"
                 fontWeight="bold"
                 // onClick={joinRoom}
                 onClick={joinRoomHandler}

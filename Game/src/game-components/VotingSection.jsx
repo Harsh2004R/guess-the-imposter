@@ -38,32 +38,35 @@ function VotingSection({
       >
         <Stack gap={3}>
           {players
-           .filter((player) => !player.eliminated)
-          .map((player) => (
-            <RadioGroup.Item
-              key={player.uid}
-              value={player.uid}
-              disabled={player.eliminated}
-              bg="whiteAlpha.50"
-              border="1px solid rgba(255,255,255,.08)"
-              p={4}
-              borderRadius="15px"
-              cursor="pointer"
-            >
-              <RadioGroup.ItemHiddenInput />
+            .filter((player) => !player.eliminated)
+            .map((player) => (
+              <RadioGroup.Item
+                key={player.uid}
+                value={player.uid}
+                disabled={player.eliminated}
+                bg="whiteAlpha.50"
+                border="1px solid rgba(255,255,255,.08)"
+                p={4}
+                color="#FFF"
+                borderRadius="15px"
+                cursor="pointer"
+              >
+                <RadioGroup.ItemHiddenInput />
 
-              <RadioGroup.ItemIndicator />
+                <RadioGroup.ItemIndicator />
 
-              <RadioGroup.ItemText>
-                {player.name}
-              </RadioGroup.ItemText>
-            </RadioGroup.Item>
-          ))}
+                <RadioGroup.ItemText>
+                  {player.name}
+                </RadioGroup.ItemText>
+              </RadioGroup.Item>
+            ))}
         </Stack>
       </RadioGroup.Root>
 
       <Button
         mt={5}
+        bg="#d7d7d7"
+        color="#000"
         colorScheme="red"
         isDisabled={voted}
         onClick={submitVote}
