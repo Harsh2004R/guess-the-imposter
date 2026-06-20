@@ -13,6 +13,10 @@ import gsap from "gsap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { listenToRoom } from "../firebase/roomService";
+import turnSound from "../assets/sounds/girigo.mp3"
+import { unlockAudio } from "../utils/audioManager.js"
+
+
 
 function Lobby() {
   const navigate = useNavigate();
@@ -235,7 +239,12 @@ function Lobby() {
             bgGradient="linear(to-r, purple.500, cyan.400)"
             color="black"
             fontWeight="bold"
-            onClick={() => navigate("/words")}
+            // onClick={() => navigate("/words")}
+            onClick={async () => {
+              await unlockAudio(turnSound);
+
+              navigate("/words");
+            }}
           >
             Start Game
           </Button>
