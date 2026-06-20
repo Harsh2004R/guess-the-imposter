@@ -100,6 +100,20 @@ export const listenToWordPairs = (roomCode, callback) => {
   });
 };
 
+
+export const removeUsedPair = async (roomCode) => {
+  const room = await getRoom(roomCode);
+
+  if (!room?.selectedPair?.id) return;
+
+  await remove(
+    ref(
+      db,
+      `rooms/${roomCode}/wordPairs/${room.selectedPair.id}`
+    )
+  );
+};
+
 // game.jsx required functions
 
 export const startGame = async ({ roomCode, imposterId, selectedPair }) => {
@@ -193,8 +207,16 @@ export const revealRoundResult = async (roomCode) => {
           (p) => p.uid
         ),
         eliminatedPlayerId,
+
+
+        finalVotes: votes,
+
+        finalVoteCount: count,
+
+
       }
     );
+
 
     return;
   }
@@ -208,8 +230,16 @@ export const revealRoundResult = async (roomCode) => {
         status: "finished",
         winner: "imposter",
         eliminatedPlayerId,
+
+
+        finalVotes: votes,
+
+        finalVoteCount: count,
+
+
       }
     );
+
 
     return;
   }
@@ -226,11 +256,37 @@ export const revealRoundResult = async (roomCode) => {
   );
 };
 
+
+
+
 export const restartGame = async (roomCode) => {
   const room = await getRoom(roomCode);
 
-  const players = Object.values(room.players || {});
-  const pairs = Object.values(room.wordPairs || {});
+  // Remove the pair used in the previous game
+  if (room?.selectedPair?.id) {
+    await remove(
+      ref(
+        db,
+        `rooms/${roomCode}/wordPairs/${room.selectedPair.id}`
+      )
+    );
+  }
+
+  const updatedRoom = await getRoom(roomCode);
+
+  const players = Object.values(updatedRoom.players || {});
+  const pairs = Object.values(updatedRoom.wordPairs || {});
+
+  // No pairs left in bucket
+  if (pairs.length === 0) {
+    // show alert if needed 
+    await remove(
+      ref(db, `rooms/${roomCode}`)
+    );
+
+    return;
+  }
+
 
   const selectedPair =
     pairs[Math.floor(Math.random() * pairs.length)];
@@ -250,6 +306,7 @@ export const restartGame = async (roomCode) => {
   await update(ref(db, `rooms/${roomCode}`), {
     status: "game",
 
+
     players: updatedPlayers,
 
     imposterId: imposter.uid,
@@ -263,5 +320,7 @@ export const restartGame = async (roomCode) => {
     eliminatedPlayerId: null,
 
     pickedPlayerId: null,
+
+
   });
 };
