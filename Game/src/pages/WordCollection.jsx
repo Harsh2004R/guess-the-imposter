@@ -109,7 +109,21 @@ function WordCollection() {
     }
   };
 
+  // const removePairHandler = async (pairId) => {
+  //   try {
+  //     await deleteWordPair(roomCode, pairId);
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("Failed to remove pair");
+  //   }
+  // };
+
   const removePairHandler = async (pairId) => {
+    if (!isHost) {
+      alert("Only host can remove pairs");
+      return;
+    }
+
     try {
       await deleteWordPair(roomCode, pairId);
     } catch (error) {
@@ -276,15 +290,15 @@ function WordCollection() {
                 >
                   {pair.word2}
                 </Heading>
-
-                <Button
-                  mt={4}
-                  size="sm"
-                  colorScheme="red"
-                  onClick={() => removePairHandler(pair.id)}
-                >
-                  Remove
-                </Button>
+                {isHost && (
+                  <Button
+                    mt={4}
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => removePairHandler(pair.id)}
+                  >
+                    Remove
+                  </Button>)}
               </Box>
             ))}
           </Grid>
