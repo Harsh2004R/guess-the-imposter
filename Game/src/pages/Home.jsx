@@ -6,10 +6,13 @@ import {
   Flex,
   Heading,
   Input,
+  Image,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { useGSAP } from "@gsap/react";
+import logo from "../assets/logo.jpeg";
 import {
   createRoom,
   generateRoomCode,
@@ -19,6 +22,53 @@ import gsap from "gsap";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
+const fireGlowBox = keyframes`
+  0% {
+    box-shadow:
+      0 0 10px #004cff,
+      0 0 20px #006aff,
+      0 0 40px #0015ff,
+      0 0 80px #0044ff;
+    transform: translateY(0px) scale(1);
+  }
+
+  25% {
+    box-shadow:
+      0 0 15px #005eff,
+      0 0 30px #4400ff,
+      0 0 60px #4c00ff,
+      0 0 100px #0d00ff;
+  }
+
+  50% {
+    box-shadow:
+      0 0 10px #004cff,
+      0 0 25px #0022ff,
+      0 0 50px #002fff,
+      0 0 80px rgba(0,128,255,.65);
+    transform: translateY(-3px) scale(1.02);
+  }
+
+  75% {
+    box-shadow:
+      0 0 20px #0044ff,
+      0 0 40px #006aff,
+      0 0 60px #002fff,
+      0 0 80px #4000ff;
+  }
+
+  100% {
+    box-shadow:
+      0 0 10px #00a2ff,
+      0 0 20px #0077ff,
+      0 0 40px #0022ff,
+      0 0 60px #0400ff;
+    transform: translateY(0px) scale(1);
+  }
+`;
+
+
 
 function Home() {
   const { user } = useAuth();
@@ -180,33 +230,48 @@ function Home() {
               MULTIPLAYER PARTY GAME
             </Badge>
 
-            <Heading
-              color="white"
-              lineHeight="0.95"
-              fontWeight="900"
-              fontSize={{
-                base: "5xl",
-                md: "7xl",
-                lg: "8xl",
-              }}
-            >
-              FIND THE
-            </Heading>
 
-            <Heading
-              bgGradient="linear(to-r, purple.400, cyan.300)"
-              bgClip="text"
-              lineHeight="0.95"
-              fontWeight="900"
-              fontSize={{
-                base: "6xl",
-                md: "8xl",
-                lg: "9xl",
-              }}
-            >
-              IMPOSTER
-            </Heading>
+            <Flex gap="10px" w="100%"
+              // border="1px solid lime"
+              justifyContent={"center"} flexDirection={"row"} >
+              <Box>
+                <Heading
+                  color="white"
+                  lineHeight="0.95"
+                  fontWeight="900"
+                  fontSize={{
+                    base: "4xl",
+                    md: "7xl",
+                    lg: "8xl",
+                  }}
+                >
+                  FIND THE
+                </Heading>
 
+                <Heading
+                  // border="1px solid lime"
+                  color="white"
+                  lineHeight="0.95"
+                  fontWeight="900"
+                  fontSize={{
+                    base: "4xl",
+                    md: "7xl",
+                    lg: "8xl",
+                  }}
+                >
+                  IMPOSTER
+                </Heading>
+
+              </Box>
+
+              <Box animation={`${fireGlowBox} 1.5s infinite ease-in-out`} borderRadius={"30px"}
+                w="150px" h="150px">
+
+                <Image borderRadius={"30px"} w="100%" h="100%" src={logo} alt="app.png" />
+              </Box>
+
+
+            </Flex>
             <Text
               mt={6}
               color="gray.400"
